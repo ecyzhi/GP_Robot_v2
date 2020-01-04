@@ -13,7 +13,7 @@ GLfloat fNormalX, fNormalY, fNormalZ = 0.0;
 
 float lx = 8.0;
 float ly = 8.0;
-float lz = 8.0;
+float lz = 1.0;
 float lightPos[] = { lx, ly, lz };
 
 float dif[] = { 1.0, 1.0, 1.0 };
@@ -49,6 +49,10 @@ float mx, my, mz = 0.0;
 float accmX[15] = { 0.0 };
 float accmY[15] = { 0.0 };
 float accmZ[15] = { 0.0 };
+
+// For animation
+int animation = 0;
+int swing = 0;
 
 // TODO: Combine duplicating shapes Eg: upperlimbs, upperlimbs2, lowerlimbs, lowerlimbs2
 // Improvement 1: Now when selecting both left and right part, the rotation will follow the left side due to getting value for mx,my,mz from accm[left]
@@ -107,6 +111,26 @@ void axisLine() {
 	glVertex3f(0.0, 0.0, 3.0);
 	glEnd();
 	glPopAttrib();
+}
+
+// Animation
+void walk() {
+	if (swing == 0) {
+		accmX[2] += 0.02;
+		accmX[3] -= 0.02;
+		accmX[8] -= 0.02;
+		accmX[9] += 0.02;
+		if (accmX[2] >= 30 && accmX[3] <= 30)
+			swing = 1;
+	}
+	else {
+		accmX[2] -= 0.02;
+		accmX[3] += 0.02;
+		accmX[8] += 0.02;
+		accmX[9] -= 0.02;
+		if (accmX[2] <= 30 && accmX[3] >= 30)
+			swing = 0;
+	}
 }
 
 // DEVELOPING BASIC SHAPES
@@ -791,6 +815,17 @@ void robot() {
 	}
 	glPushMatrix();
 		glTranslatef(2.5, 3.0, 0.0);
+		if (animation == 1) {
+			walk();
+		}
+		glRotatef(accmX[2], 1, 0, 0);
+		glRotatef(accmY[2], 0, 1, 0);
+		glRotatef(accmZ[2], 0, 0, 1);
+		if (movePart == 31) {
+			accmX[2] = mx;
+			accmY[2] = my;
+			accmZ[2] = mz;
+		}
 		leftULimb();
 	glPopMatrix();
 	glPopAttrib();
@@ -801,6 +836,17 @@ void robot() {
 	}
 	glPushMatrix();
 		glTranslatef(-2.5, 3.0, 0.0);
+		if (animation == 1) {
+			walk();
+		}
+		glRotatef(accmX[3], 1, 0, 0);
+		glRotatef(accmY[3], 0, 1, 0);
+		glRotatef(accmZ[3], 0, 0, 1);
+		if (movePart == 31) {
+			accmX[3] = mx;
+			accmY[3] = my;
+			accmZ[3] = mz;
+		}
 		rightULimb();
 	glPopMatrix();
 	glPopAttrib();
@@ -817,6 +863,17 @@ void robot() {
 	}
 	glPushMatrix();
 		glTranslatef(1.5, -3.3, 0.0);
+		if (animation == 1) {
+			walk();
+		}
+		glRotatef(accmX[8], 1, 0, 0);
+		glRotatef(accmY[8], 0, 1, 0);
+		glRotatef(accmZ[8], 0, 0, 1);
+		if (movePart == 31) {
+			accmX[8] = mx;
+			accmY[8] = my;
+			accmZ[8] = mz;
+		}
 		leftDLimb();
 	glPopMatrix();
 	glPopAttrib();
@@ -827,6 +884,17 @@ void robot() {
 	}
 	glPushMatrix();
 		glTranslatef(-1.5, -3.3, 0.0);
+		if (animation == 1) {
+			walk();
+		}
+		glRotatef(accmX[9], 1, 0, 0);
+		glRotatef(accmY[9], 0, 1, 0);
+		glRotatef(accmZ[9], 0, 0, 1);
+		if (movePart == 31) {
+			accmX[9] = mx;
+			accmY[9] = my;
+			accmZ[9] = mz;
+		}
 		rightDLimb();
 	glPopMatrix();
 	glPopAttrib();
@@ -875,8 +943,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			mx = 0.0;
 			my = 0.0;
 			mz = 0.0;
+			animation = 0;
 
-			for (int i = 0; i < 12; i++) {
+			for (int i = 0; i < 15; i++) {
 				accmX[i] = 0.0;
 				accmY[i] = 0.0;
 				accmZ[i] = 0.0;
@@ -1011,6 +1080,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		if (wParam == 'H') { mx += 0.0;			my += 0.0;			mz += moveSpeed;	moveDirection = 2; }
 		if (wParam == 'Y') { mx += 0.0;			my += moveSpeed;	mz += 0.0;			moveDirection = 1; }
 		if (wParam == 'R') { mx += 0.0;			my -= moveSpeed;	mz += 0.0;			moveDirection = 1; }
+		if (wParam == 'M') { animation = 1; }
 
 
 
