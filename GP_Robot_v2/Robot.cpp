@@ -8,6 +8,9 @@
 
 #define WINDOW_TITLE "Robot"
 
+// Switching view
+float OrthoPers = 0;
+
 // For Lighting
 GLfloat fNormalX, fNormalY, fNormalZ = 0.0;
 
@@ -53,9 +56,9 @@ float accmZ[15] = { 0.0 };
 // For animation
 int animation = 0;
 int swing = 0;
+int draw = 0;
 
 // TODO: Combine duplicating shapes Eg: upperlimbs, upperlimbs2, lowerlimbs, lowerlimbs2
-// Improvement 1: Now when selecting both left and right part, the rotation will follow the left side due to getting value for mx,my,mz from accm[left]
 
 //*******************************************************************
 // Function: CalculateVectorNormal
@@ -130,6 +133,19 @@ void walk() {
 		accmX[9] -= 0.02;
 		if (accmX[2] <= 30 && accmX[3] >= 30)
 			swing = 0;
+	}
+}
+
+void drawSword() {
+	if(accmY[3] > -90) {
+		accmY[3] -= 0.05;
+	}
+	else {
+		if (accmX[3] >= -90) {
+			accmX[3] -= 0.02;
+			accmZ[5] += 0.02;
+			accmZ[7] += 0.01;
+		}
 	}
 }
 
@@ -669,32 +685,45 @@ void leftULimb() {
 
 void rightULimb() {
 	glPushMatrix();
-		//glTranslatef(2.5, 3, 0.0);
-		glTranslatef(0.0, 0.0, 0.0);
-		upperLimbs();
-	glPopMatrix();
-
-	glPushAttrib(GL_CURRENT_BIT);
-	if (movePart == 42) {
-		glColor3f(1.0, 0.0, 0.0);
-	}
-	glPushMatrix();
-		//glTranslatef(2.5, 0.1, 0.0);
 		glTranslatef(0.0, -2.9, 0.0);
+		glRotatef(accmX[5], 1, 0, 0);
+		glRotatef(accmY[5], 0, 1, 0);
+		glRotatef(accmZ[5], 0, 0, 1);
+
+
+
+		glPushAttrib(GL_CURRENT_BIT);
+		if (movePart == 52) {
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		glPushMatrix();
+			//glTranslatef(2.5, -2.8, 0.0);
+			//glTranslatef(0.0, -5.8, 0.0);
+			glTranslatef(0.0, -2.9, 0.0);
+			glRotatef(accmX[7], 1, 0, 0);
+			glRotatef(accmY[7], 0, 1, 0);
+			glRotatef(accmZ[7], 0, 0, 1);
+			upperLimbs3();
+		glPopMatrix();
+		glPopAttrib();
+
+		glPushAttrib(GL_CURRENT_BIT);
+		if (movePart == 42) {
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		
+		//glTranslatef(2.5, 0.1, 0.0);
+		//glTranslatef(0.0, -2.9, 0.0);
+			
 		upperLimbs2();
 	glPopMatrix();
 	glPopAttrib();
 
-	glPushAttrib(GL_CURRENT_BIT);
-	if (movePart == 52) {
-		glColor3f(1.0, 0.0, 0.0);
-	}
 	glPushMatrix();
-		//glTranslatef(2.5, -2.8, 0.0);
-		glTranslatef(0.0, -5.8, 0.0);
-		upperLimbs3();
+		//glTranslatef(2.5, 3, 0.0);
+		glTranslatef(0.0, 0.0, 0.0);
+		upperLimbs();
 	glPopMatrix();
-	glPopAttrib();
 }
 
 // This part will not rotate and only translate together with upperbody and headneck when walking
@@ -838,6 +867,9 @@ void robot() {
 		glTranslatef(-2.5, 3.0, 0.0);
 		if (animation == 1) {
 			walk();
+		}
+		else if (animation == 2) {
+			drawSword();
 		}
 		glRotatef(accmX[3], 1, 0, 0);
 		glRotatef(accmY[3], 0, 1, 0);
@@ -1086,8 +1118,11 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				accmY[i] = 0.0;
 				accmZ[i] = 0.0;
 			}
-
+			
 			glLoadIdentity();
+			if (OrthoPers == 1) {
+				glTranslatef(0.0, 0.0, -8.0);
+			}
 		}
 		if (wParam == 0x30) {
 			movePart = 0;
@@ -1111,10 +1146,18 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			mx = 0.0;
 			my = 0.0;
 			mz = 0.0;
-			if (movePart == 31)
+			if (movePart == 31) {
+				//accmX[3] = 0.0;
+				//accmY[3] = 0.0;
+				//accmZ[3] = 0.0;
 				movePart = 32;
-			else
+			}
+			else {
+				//accmX[2] = 0.0;
+				//accmY[2] = 0.0;
+				//accmZ[2] = 0.0;
 				movePart = 31;
+			}
 		}
 		if (wParam == 0x34) {
 			mx = 0.0;
@@ -1216,7 +1259,40 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		if (wParam == 'H') { mx += 0.0;			my += 0.0;			mz += moveSpeed;	moveDirection = 2; }
 		if (wParam == 'Y') { mx += 0.0;			my += moveSpeed;	mz += 0.0;			moveDirection = 1; }
 		if (wParam == 'R') { mx += 0.0;			my -= moveSpeed;	mz += 0.0;			moveDirection = 1; }
-		if (wParam == 'M') { animation = 1; }
+		if (wParam == 'M') { 
+			animation = 1; 
+			for (int i = 0; i < 15; i++) {
+				accmX[i] = 0.0;
+				accmY[i] = 0.0;
+				accmZ[i] = 0.0;
+			}
+		}
+		if (wParam == 'N') { 
+			animation = 2;
+			for (int i = 0; i < 15; i++) {
+				accmX[i] = 0.0;
+				accmY[i] = 0.0;
+				accmZ[i] = 0.0;
+			}
+		}
+		if (wParam == 'X') {
+			if (OrthoPers == 1) {
+				glMatrixMode(GL_PROJECTION);
+				glLoadIdentity();
+				glOrtho(-15.0, 15.0, -15.0, 15.0, -15.0, 15.0);
+				OrthoPers = 0;
+			}
+			else {
+				glMatrixMode(GL_PROJECTION);
+				glLoadIdentity();
+				glFrustum(-2.0, 2.0, -2.0, 2.0, 1.0, 10.0);
+				OrthoPers = 1;
+
+				glMatrixMode(GL_MODELVIEW);
+				glLoadIdentity();
+				glTranslatef(0.0, 0.0, -8.0);
+			}
+		}
 
 
 
@@ -1419,9 +1495,9 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 	glLoadIdentity();
 	//glOrtho(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0);
 	//glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-	glOrtho(-15.0, 15.0, -15.0, 15.0, -15.0, 15.0);
 	//gluPerspective(60.0, 1.0, -1.0, 1.0);
 	//glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 6.0);
+	glOrtho(-15.0, 15.0, -15.0, 15.0, -15.0, 15.0);
 
 	while (true)
 	{
