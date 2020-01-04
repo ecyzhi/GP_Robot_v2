@@ -900,6 +900,142 @@ void robot() {
 	glPopAttrib();
 }
 
+void sword() {
+	GLfloat swordVertices[7][3] = {
+		0.0, 0.0, 0.1,
+		-0.5, 0.0, 0.0,
+		0.0, 0.0, -0.1,
+		0.5, 0.0, 0.0,
+		0.0, -10.0, 0.0,
+		-0.5, -9.0, 0.0,
+		0.5, -9.0, 0.0
+	};
+
+	GLfloat handleVertices[8][3] = {
+		-2.0, 0.0, 0.2,
+		-2.0, 0.0, -0.2,
+		-2.0, -0.4, -0.2,
+		-2.0, -0.4, 0.2,
+		2.0, 0.0, 0.2,
+		2.0, -0.4, 0.2,
+		2.0, -0.4, -0.2,
+		2.0, 0.0, -0.2,
+	};
+
+	GLUquadricObj* cylinder = NULL;
+	cylinder = gluNewQuadric();
+
+	GLUquadricObj* sphere = NULL;
+	sphere = gluNewQuadric();
+
+	// Blade
+	glBegin(GL_QUADS);
+	// Top
+	CalculateVectorNormal(swordVertices[2], swordVertices[3], swordVertices[0], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(swordVertices[0]);	//0
+	glVertex3fv(swordVertices[3]);	//3
+	glVertex3fv(swordVertices[2]);	//2
+	glVertex3fv(swordVertices[1]);	//1
+
+	// Front 1
+	CalculateVectorNormal(swordVertices[4], swordVertices[0], swordVertices[3], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(swordVertices[3]);	//3
+	glVertex3fv(swordVertices[0]);	//0
+	glVertex3fv(swordVertices[4]);	//4
+	glVertex3fv(swordVertices[6]);	//6
+
+	// Front 2
+	CalculateVectorNormal(swordVertices[5], swordVertices[1], swordVertices[0], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(swordVertices[0]);	//0
+	glVertex3fv(swordVertices[1]);	//1
+	glVertex3fv(swordVertices[5]);	//5
+	glVertex3fv(swordVertices[4]);	//4
+
+	// Back 1
+	CalculateVectorNormal(swordVertices[4], swordVertices[2], swordVertices[1], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(swordVertices[1]);	//1
+	glVertex3fv(swordVertices[2]);	//2
+	glVertex3fv(swordVertices[4]);	//4
+	glVertex3fv(swordVertices[5]);	//5
+
+	// Back 2
+	CalculateVectorNormal(swordVertices[6], swordVertices[3], swordVertices[2], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(swordVertices[2]);	//2
+	glVertex3fv(swordVertices[3]);	//3
+	glVertex3fv(swordVertices[6]);	//6
+	glVertex3fv(swordVertices[4]);	//4
+
+	glEnd();
+
+	// Handle
+	glBegin(GL_QUADS);
+	// Left
+	CalculateVectorNormal(handleVertices[2], handleVertices[1], handleVertices[0], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(handleVertices[0]);	//0
+	glVertex3fv(handleVertices[1]);	//1
+	glVertex3fv(handleVertices[2]);	//2
+	glVertex3fv(handleVertices[3]);	//3
+
+	// Top
+	CalculateVectorNormal(handleVertices[1], handleVertices[7], handleVertices[4], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(handleVertices[4]);	//4
+	glVertex3fv(handleVertices[7]);	//7
+	glVertex3fv(handleVertices[1]);	//1
+	glVertex3fv(handleVertices[0]);	//0
+
+	// Front
+	CalculateVectorNormal(handleVertices[0], handleVertices[4], handleVertices[5], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(handleVertices[5]);	//5
+	glVertex3fv(handleVertices[4]);	//4
+	glVertex3fv(handleVertices[0]);	//0
+	glVertex3fv(handleVertices[3]);	//3
+
+	// Bottom
+	CalculateVectorNormal(handleVertices[3], handleVertices[5], handleVertices[6], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(handleVertices[6]);	//6
+	glVertex3fv(handleVertices[5]);	//5
+	glVertex3fv(handleVertices[3]);	//3
+	glVertex3fv(handleVertices[2]);	//2
+
+	// Back
+	CalculateVectorNormal(handleVertices[7], handleVertices[1], handleVertices[2], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(handleVertices[2]);	//2
+	glVertex3fv(handleVertices[1]);	//1
+	glVertex3fv(handleVertices[7]);	//7
+	glVertex3fv(handleVertices[6]);	//6
+
+	// Right
+	CalculateVectorNormal(handleVertices[4], handleVertices[7], handleVertices[6], &fNormalX, &fNormalY, &fNormalZ);
+	glNormal3f(fNormalX, fNormalY, fNormalZ);
+	glVertex3fv(handleVertices[6]);	//6
+	glVertex3fv(handleVertices[7]);	//7
+	glVertex3fv(handleVertices[4]);	//4
+	glVertex3fv(handleVertices[5]);	//5
+	glEnd();
+
+	glPushMatrix();
+		glRotatef(-90.0, 1.0, 0.0, 0.0);
+		gluCylinder(cylinder, 0.3, 0.3, 2.0, 10, 10);
+		gluDeleteQuadric(cylinder);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0.0, 2.2, 0.0);
+		gluSphere(sphere, 0.5, 30, 10);
+		gluDeleteQuadric(sphere);
+	glPopMatrix();
+}
+
 // Map the light source 
 void lightSource() {
 	GLUquadricObj* sphere = NULL;
@@ -1172,6 +1308,9 @@ void display()
 	//if (rx != 0.0 || ry != 0.0 || rz != 0.0)
 	//	glRotatef(0.05, rx, ry, rz);
 
+
+
+	//------------------------------ Robot ----------------------------------------
 	// Green color for robot
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, green);
 	glMaterialfv(GL_BACK, GL_AMBIENT, green);
@@ -1197,6 +1336,34 @@ void display()
 	glPopMatrix();
 	glPopAttrib();
 	
+	//------------------------------ Sword --------------------------------------
+	// Yellow color for sword
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, yellow);
+	glMaterialfv(GL_BACK, GL_AMBIENT, yellow);
+
+	// vv Draw outline vv
+	glDisable(GL_POLYGON_OFFSET_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glColor3f(1.0, 1.0, 1.0);
+	glPushMatrix();
+		glTranslatef(-2.0, 5.0, -1.5);
+		glRotatef(30.0, 0.0, 0.0, 1.0);
+		sword();
+	glPopMatrix();
+
+	glEnable(GL_POLYGON_OFFSET_FILL);
+	glPolygonOffset(1.0, 0.0);
+	glColor3f(1.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	// ^^ Draw outline ^^
+
+	glPushAttrib(GL_CURRENT_BIT);
+	glPushMatrix();
+		glTranslatef(-2.0, 5.0, -1.5);
+		glRotatef(30.0, 0.0, 0.0, 1.0);
+		sword();
+	glPopMatrix();
+	glPopAttrib();
 
 
 
