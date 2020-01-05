@@ -1425,6 +1425,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			else
 				weapon = 1;
 		}
+		if (wParam == VK_OEM_MINUS) {
+				glScalef(0.8, 0.8, 0.8);
+		}
+		if (wParam == VK_OEM_PLUS) {
+				glScalef(1.2, 1.2, 1.2);
+		}
 
 
 
