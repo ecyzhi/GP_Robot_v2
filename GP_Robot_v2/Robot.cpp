@@ -54,6 +54,7 @@ float accmY[15] = { 0.0 };
 float accmZ[15] = { 0.0 };
 
 // For animation
+int weapon = 0;
 int animation = 0;
 int swing = 0;
 int draw = 0;
@@ -593,17 +594,24 @@ void headNeck() {
 	if (movePart == 1) {
 		glColor3f(1.0, 0.0, 0.0);
 	}
+	glRotatef(accmX[0], 1, 0, 0);
+	glRotatef(accmY[0], 0, 1, 0);
+	glRotatef(accmZ[0], 0, 0, 1);
+	if (movePart == 1) {
+		accmX[0] = mx;
+		accmY[0] = my;
+		accmZ[0] = mz;
+	}
 
 
 	glPushMatrix();
-	glTranslatef(0.0, 6, 0.0);
-	head();
+		glTranslatef(0.0, 1.2, 0.0);
+		head();
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(0.0, 4.8, 0.0);
-	glRotatef(90.0, 1.0, 0.0, 0.0);
-	neck();
+		glRotatef(90.0, 1.0, 0.0, 0.0);
+		neck();
 	glPopMatrix();
 
 	glPopAttrib();
@@ -896,58 +904,72 @@ void robot() {
 	if (movePart == 2) {
 		glColor3f(1.0, 0.0, 0.0);
 	}
-	// Head & Neck
-	headNeck();
-
-	// Upper Body
-	upperBody();
-
-	// Upper Limbs
-	glPushAttrib(GL_CURRENT_BIT);
-	if (movePart == 31) {
-		glColor3f(1.0, 0.0, 0.0);
-	}
 	glPushMatrix();
-		glTranslatef(2.5, 3.0, 0.0);
-		if (animation == 1) {
-			walk();
+		glRotatef(accmX[1], 1, 0, 0);
+		glRotatef(accmY[1], 0, 1, 0);
+		glRotatef(accmZ[1], 0, 0, 1);
+		if (movePart == 2) {
+			accmX[1] = mx;
+			accmY[1] = my;
+			accmZ[1] = mz;
 		}
-		glRotatef(accmX[2], 1, 0, 0);
-		glRotatef(accmY[2], 0, 1, 0);
-		glRotatef(accmZ[2], 0, 0, 1);
+
+		// Head & Neck
+		glPushMatrix();
+			glTranslatef(0.0, 4.8, 0.0);
+			headNeck();
+		glPopMatrix();
+
+		// Upper Body
+		upperBody();
+
+		// Upper Limbs
+		glPushAttrib(GL_CURRENT_BIT);
 		if (movePart == 31) {
-			accmX[2] = mx;
-			accmY[2] = my;
-			accmZ[2] = mz;
+			glColor3f(1.0, 0.0, 0.0);
 		}
-		leftULimb();
-	glPopMatrix();
-	glPopAttrib();
+		glPushMatrix();
+			glTranslatef(2.5, 3.0, 0.0);
+			if (animation == 1) {
+				walk();
+			}
+			glRotatef(accmX[2], 1, 0, 0);
+			glRotatef(accmY[2], 0, 1, 0);
+			glRotatef(accmZ[2], 0, 0, 1);
+			if (movePart == 31) {
+				accmX[2] = mx;
+				accmY[2] = my;
+				accmZ[2] = mz;
+			}
+			leftULimb();
+		glPopMatrix();
+		glPopAttrib();
 
-	glPushAttrib(GL_CURRENT_BIT);
-	if (movePart == 32) {
-		glColor3f(1.0, 0.0, 0.0);
-	}
-	glPushMatrix();
-		glTranslatef(-2.5, 3.0, 0.0);
-		if (animation == 1) {
-			walk();
-		}
-		else if (animation == 2) {
-			drawSword();
-		}
-		glRotatef(accmX[3], 1, 0, 0);
-		glRotatef(accmY[3], 0, 1, 0);
-		glRotatef(accmZ[3], 0, 0, 1);
+		glPushAttrib(GL_CURRENT_BIT);
 		if (movePart == 32) {
-			accmX[3] = mx;
-			accmY[3] = my;
-			accmZ[3] = mz;
+			glColor3f(1.0, 0.0, 0.0);
 		}
-		rightULimb();
-	glPopMatrix();
-	glPopAttrib();
+		glPushMatrix();
+			glTranslatef(-2.5, 3.0, 0.0);
+			if (animation == 1) {
+				walk();
+			}
+			else if (animation == 2) {
+				drawSword();
+			}
+			glRotatef(accmX[3], 1, 0, 0);
+			glRotatef(accmY[3], 0, 1, 0);
+			glRotatef(accmZ[3], 0, 0, 1);
+			if (movePart == 32) {
+				accmX[3] = mx;
+				accmY[3] = my;
+				accmZ[3] = mz;
+			}
+			rightULimb();
+		glPopMatrix();
+		glPopAttrib();
 
+	glPopMatrix();
 	glPopAttrib();
 
 	// Lower Body
@@ -1314,6 +1336,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			mx = 0.0;
 			my = 0.0;
 			mz = 0.0;
+			mx = accmX[14];
+			my = accmY[14];
+			mz = accmZ[14];
 		}
 		if (wParam == 'I') {
 			ly += lightSpeed;
@@ -1393,6 +1418,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 				glLoadIdentity();
 				glTranslatef(0.0, 0.0, -8.0);
 			}
+		}
+		if (wParam == 'C') {
+			if (weapon == 1)
+				weapon = 0;
+			else
+				weapon = 1;
 		}
 
 
@@ -1488,6 +1519,16 @@ void display()
 
 
 	//------------------------------ Robot ----------------------------------------
+	glPushMatrix();
+	glRotatef(accmX[14], 1, 0, 0);
+	glRotatef(accmY[14], 0, 1, 0);
+	glRotatef(accmZ[14], 0, 0, 1);
+	if (movePart == 9) {
+		accmX[14] = mx;
+		accmY[14] = my;
+		accmZ[14] = mz;
+	}
+
 	// Green color for robot
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, green);
 	glMaterialfv(GL_BACK, GL_AMBIENT, green);
@@ -1511,36 +1552,40 @@ void display()
 	glPushMatrix();
 		robot();
 	glPopMatrix();
+
+	glPopMatrix();
 	glPopAttrib();
 	
 	//------------------------------ Sword --------------------------------------
-	// Yellow color for sword
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, yellow);
-	glMaterialfv(GL_BACK, GL_AMBIENT, yellow);
+	if (weapon == 1) {
+		// Yellow color for sword
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, yellow);
+		glMaterialfv(GL_BACK, GL_AMBIENT, yellow);
 
-	// vv Draw outline vv
-	glDisable(GL_POLYGON_OFFSET_FILL);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glColor3f(1.0, 1.0, 1.0);
-	glPushMatrix();
+		// vv Draw outline vv
+		glDisable(GL_POLYGON_OFFSET_FILL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glColor3f(1.0, 1.0, 1.0);
+		glPushMatrix();
 		glTranslatef(-2.0, 5.0, -1.5);
 		glRotatef(30.0, 0.0, 0.0, 1.0);
 		sword();
-	glPopMatrix();
+		glPopMatrix();
 
-	glEnable(GL_POLYGON_OFFSET_FILL);
-	glPolygonOffset(1.0, 0.0);
-	glColor3f(1.0, 0.0, 1.0);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	// ^^ Draw outline ^^
+		glEnable(GL_POLYGON_OFFSET_FILL);
+		glPolygonOffset(1.0, 0.0);
+		glColor3f(1.0, 0.0, 1.0);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		// ^^ Draw outline ^^
 
-	glPushAttrib(GL_CURRENT_BIT);
-	glPushMatrix();
+		glPushAttrib(GL_CURRENT_BIT);
+		glPushMatrix();
 		glTranslatef(-2.0, 5.0, -1.5);
 		glRotatef(30.0, 0.0, 0.0, 1.0);
 		sword();
-	glPopMatrix();
-	glPopAttrib();
+		glPopMatrix();
+		glPopAttrib();
+	}
 
 
 
