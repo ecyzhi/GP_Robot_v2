@@ -655,32 +655,53 @@ void upperLimbs3() {
 
 void leftULimb() {
 	glPushMatrix();
-		//glTranslatef(2.5, 3, 0.0);
-		glTranslatef(0.0, 0.0, 0.0);
-		upperLimbs();
-	glPopMatrix();
-
-	glPushAttrib(GL_CURRENT_BIT);
-	if (movePart == 41) {
-		glColor3f(1.0, 0.0, 0.0);
-	}
-	glPushMatrix();
-		//glTranslatef(2.5, 0.1, 0.0);
 		glTranslatef(0.0, -2.9, 0.0);
+		glRotatef(accmX[4], 1, 0, 0);
+		glRotatef(accmY[4], 0, 1, 0);
+		glRotatef(accmZ[4], 0, 0, 1);
+		if (movePart == 41) {
+			accmX[4] = mx;
+			accmY[4] = my;
+			accmZ[4] = mz;
+		}
+
+		glPushAttrib(GL_CURRENT_BIT);
+		if (movePart == 51) {
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		glPushMatrix();
+			//glTranslatef(2.5, -2.8, 0.0);
+			//glTranslatef(0.0, -5.8, 0.0);
+			glTranslatef(0.0, -2.9, 0.0);
+			glRotatef(accmX[6], 1, 0, 0);
+			glRotatef(accmY[6], 0, 1, 0);
+			glRotatef(accmZ[6], 0, 0, 1);
+			if (movePart == 51) {
+				accmX[6] = mx;
+				accmY[6] = my;
+				accmZ[6] = mz;
+			}
+			upperLimbs3();
+		glPopMatrix();
+		glPopAttrib();
+
+		glPushAttrib(GL_CURRENT_BIT);
+		if (movePart == 41) {
+			glColor3f(1.0, 0.0, 0.0);
+		}
+
+		//glTranslatef(2.5, 0.1, 0.0);
+		//glTranslatef(0.0, -2.9, 0.0);
+
 		upperLimbs2();
 	glPopMatrix();
 	glPopAttrib();
 
-	glPushAttrib(GL_CURRENT_BIT);
-	if (movePart == 51) {
-		glColor3f(1.0, 0.0, 0.0);
-	}
 	glPushMatrix();
-		//glTranslatef(2.5, -2.8, 0.0);
-		glTranslatef(0.0, -5.8, 0.0);
-		upperLimbs3();
+	//glTranslatef(2.5, 3, 0.0);
+	//glTranslatef(0.0, 0.0, 0.0);
+	upperLimbs();
 	glPopMatrix();
-	glPopAttrib();
 }
 
 void rightULimb() {
@@ -689,8 +710,11 @@ void rightULimb() {
 		glRotatef(accmX[5], 1, 0, 0);
 		glRotatef(accmY[5], 0, 1, 0);
 		glRotatef(accmZ[5], 0, 0, 1);
-
-
+		if (movePart == 42) {
+			accmX[5] = mx;
+			accmY[5] = my;
+			accmZ[5] = mz;
+		}
 
 		glPushAttrib(GL_CURRENT_BIT);
 		if (movePart == 52) {
@@ -703,6 +727,11 @@ void rightULimb() {
 			glRotatef(accmX[7], 1, 0, 0);
 			glRotatef(accmY[7], 0, 1, 0);
 			glRotatef(accmZ[7], 0, 0, 1);
+			if (movePart == 52) {
+				accmX[7] = mx;
+				accmY[7] = my;
+				accmZ[7] = mz;
+			}
 			upperLimbs3();
 		glPopMatrix();
 		glPopAttrib();
@@ -721,7 +750,7 @@ void rightULimb() {
 
 	glPushMatrix();
 		//glTranslatef(2.5, 3, 0.0);
-		glTranslatef(0.0, 0.0, 0.0);
+		//glTranslatef(0.0, 0.0, 0.0);
 		upperLimbs();
 	glPopMatrix();
 }
@@ -774,56 +803,92 @@ void lowerLimbs3() {
 
 void leftDLimb() {
 	glPushMatrix();
-		glTranslatef(0.0, 0.0, 0.0);
-		lowerLimbs();
-	glPopMatrix();
-
-	glPushAttrib(GL_CURRENT_BIT);
-	if (movePart == 71) {
-		glColor3f(1.0, 0.0, 0.0);
-	}
-	glPushMatrix();
 		glTranslatef(0.0, -2.9, 0.0);
+		glRotatef(accmX[10], 1, 0, 0);
+		glRotatef(accmY[10], 0, 1, 0);
+		glRotatef(accmZ[10], 0, 0, 1);
+		if (movePart == 71) {
+			accmX[10] = mx;
+			accmY[10] = my;
+			accmZ[10] = mz;
+		}
+
+		glPushAttrib(GL_CURRENT_BIT);
+		if (movePart == 81) {
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		glPushMatrix();
+			glTranslatef(0.0, -2.9, 0.0);
+			glRotatef(accmX[12], 1, 0, 0);
+			glRotatef(accmY[12], 0, 1, 0);
+			glRotatef(accmZ[12], 0, 0, 1);
+			if (movePart == 81) {
+				accmX[12] = mx;
+				accmY[12] = my;
+				accmZ[12] = mz;
+			}
+			lowerLimbs3();
+		glPopMatrix();
+		glPopAttrib();
+
+		glPushAttrib(GL_CURRENT_BIT);
+		if (movePart == 71) {
+			glColor3f(1.0, 0.0, 0.0);
+		}
+
+
 		lowerLimbs2();
 	glPopMatrix();
 	glPopAttrib();
 
-	glPushAttrib(GL_CURRENT_BIT);
-	if (movePart == 81) {
-		glColor3f(1.0, 0.0, 0.0);
-	}
 	glPushMatrix();
-		glTranslatef(0.0, -5.8, 0.0);
-		lowerLimbs3();
+		lowerLimbs();
 	glPopMatrix();
-	glPopAttrib();
 }
 
 void rightDLimb() {
 	glPushMatrix();
-		glTranslatef(0.0, 0.0, 0.0);
-		lowerLimbs();
-	glPopMatrix();
-
-	glPushAttrib(GL_CURRENT_BIT);
-	if (movePart == 72) {
-		glColor3f(1.0, 0.0, 0.0);
-	}
-	glPushMatrix();
 		glTranslatef(0.0, -2.9, 0.0);
+		glRotatef(accmX[11], 1, 0, 0);
+		glRotatef(accmY[11], 0, 1, 0);
+		glRotatef(accmZ[11], 0, 0, 1);
+		if (movePart == 72) {
+			accmX[11] = mx;
+			accmY[11] = my;
+			accmZ[11] = mz;
+		}
+
+		glPushAttrib(GL_CURRENT_BIT);
+		if (movePart == 82) {
+			glColor3f(1.0, 0.0, 0.0);
+		}
+		glPushMatrix();
+			glTranslatef(0.0, -2.9, 0.0);
+			glRotatef(accmX[13], 1, 0, 0);
+			glRotatef(accmY[13], 0, 1, 0);
+			glRotatef(accmZ[13], 0, 0, 1);
+			if (movePart == 82) {
+				accmX[13] = mx;
+				accmY[13] = my;
+				accmZ[13] = mz;
+			}
+			lowerLimbs3();
+		glPopMatrix();
+		glPopAttrib();
+
+		glPushAttrib(GL_CURRENT_BIT);
+		if (movePart == 72) {
+			glColor3f(1.0, 0.0, 0.0);
+		}
+
+
 		lowerLimbs2();
 	glPopMatrix();
 	glPopAttrib();
 
-	glPushAttrib(GL_CURRENT_BIT);
-	if (movePart == 82) {
-		glColor3f(1.0, 0.0, 0.0);
-	}
 	glPushMatrix();
-		glTranslatef(0.0, -5.8, 0.0);
-		lowerLimbs3();
+		lowerLimbs();
 	glPopMatrix();
-	glPopAttrib();
 }
 
 void robot() {
@@ -874,7 +939,7 @@ void robot() {
 		glRotatef(accmX[3], 1, 0, 0);
 		glRotatef(accmY[3], 0, 1, 0);
 		glRotatef(accmZ[3], 0, 0, 1);
-		if (movePart == 31) {
+		if (movePart == 32) {
 			accmX[3] = mx;
 			accmY[3] = my;
 			accmZ[3] = mz;
@@ -901,7 +966,7 @@ void robot() {
 		glRotatef(accmX[8], 1, 0, 0);
 		glRotatef(accmY[8], 0, 1, 0);
 		glRotatef(accmZ[8], 0, 0, 1);
-		if (movePart == 31) {
+		if (movePart == 61) {
 			accmX[8] = mx;
 			accmY[8] = my;
 			accmZ[8] = mz;
@@ -922,7 +987,7 @@ void robot() {
 		glRotatef(accmX[9], 1, 0, 0);
 		glRotatef(accmY[9], 0, 1, 0);
 		glRotatef(accmZ[9], 0, 0, 1);
-		if (movePart == 31) {
+		if (movePart == 62) {
 			accmX[9] = mx;
 			accmY[9] = my;
 			accmZ[9] = mz;
@@ -1132,31 +1197,31 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		if (wParam == 0x31) {
 			movePart = 1;
-			mx = 0.0;
-			my = 0.0;
-			mz = 0.0;
+			mx = accmX[0];
+			my = accmY[0];
+			mz = accmZ[0];
 		}
 		if (wParam == 0x32) {
 			movePart = 2;
-			mx = 0.0;
-			my = 0.0;
-			mz = 0.0;
+			mx = accmX[1];
+			my = accmY[1];
+			mz = accmZ[1];
 		}
 		if (wParam == 0x33) {
 			mx = 0.0;
 			my = 0.0;
 			mz = 0.0;
 			if (movePart == 31) {
-				//accmX[3] = 0.0;
-				//accmY[3] = 0.0;
-				//accmZ[3] = 0.0;
 				movePart = 32;
+				mx = accmX[3];
+				my = accmY[3];
+				mz = accmZ[3];
 			}
 			else {
-				//accmX[2] = 0.0;
-				//accmY[2] = 0.0;
-				//accmZ[2] = 0.0;
 				movePart = 31;
+				mx = accmX[2];
+				my = accmY[2];
+				mz = accmZ[2];
 			}
 		}
 		if (wParam == 0x34) {
@@ -1165,9 +1230,15 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			mz = 0.0;
 			if (movePart == 41) {
 				movePart = 42;
+				mx = accmX[5];
+				my = accmY[5];
+				mz = accmZ[5];
 			}
 			else {
 				movePart = 41;
+				mx = accmX[4];
+				my = accmY[4];
+				mz = accmZ[4];
 			}
 		}
 		if (wParam == 0x35) {
@@ -1176,37 +1247,67 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			mz = 0.0;
 			if (movePart == 51) {
 				movePart = 52;
+				mx = accmX[7];
+				my = accmY[7];
+				mz = accmZ[7];
 			}
 			else {
 				movePart = 51;
+				mx = accmX[6];
+				my = accmY[6];
+				mz = accmZ[6];
 			}
 		}
 		if (wParam == 0x36) {
 			mx = 0.0;
 			my = 0.0;
 			mz = 0.0;
-			if (movePart == 61)
+			if (movePart == 61) {
 				movePart = 62;
-			else
+				mx = accmX[9];
+				my = accmY[9];
+				mz = accmZ[9];
+			}
+			else {
 				movePart = 61;
+				mx = accmX[8];
+				my = accmY[8];
+				mz = accmZ[8];
+			}
 		}
 		if (wParam == 0x37) {
 			mx = 0.0;
 			my = 0.0;
 			mz = 0.0;
-			if (movePart == 71)
+			if (movePart == 71) {
 				movePart = 72;
-			else
+				mx = accmX[11];
+				my = accmY[11];
+				mz = accmZ[11];
+			}
+			else {
 				movePart = 71;
+				mx = accmX[10];
+				my = accmY[10];
+				mz = accmZ[10];
+			}
 		}
 		if (wParam == 0x38) {
 			mx = 0.0;
 			my = 0.0;
 			mz = 0.0;
-			if (movePart == 81)
+			if (movePart == 81) {
 				movePart = 82;
-			else
+				mx = accmX[13];
+				my = accmY[13];
+				mz = accmZ[13];
+			}
+			else {
 				movePart = 81;
+				mx = accmX[12];
+				my = accmY[12];
+				mz = accmZ[12];
+			}
 		}
 		if (wParam == 0x39) {
 			movePart = 9;
