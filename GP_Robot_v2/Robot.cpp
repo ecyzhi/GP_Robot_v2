@@ -61,6 +61,7 @@ int weapon = 0;
 int animation = 0;
 int swing = 0;
 int draw = 0;
+int pose = 0;
 
 float swordRX = 0.0;
 float swordRY = 0.0;
@@ -1309,6 +1310,39 @@ void swordRain() {
 	}
 }
 
+void robotPose() {
+	// The Thinker
+	if (pose == 1) {
+		weapon = 0;
+		accmX[14] = 10.0;
+		accmX[1] = 30.0;
+		accmX[0] = 10.0;
+		accmX[8] = -90.0;
+		accmX[9] = -70.0;
+		accmX[10] = 100.0;
+		accmX[11] = 90.0;
+		accmZ[9] = -10.0;
+		accmZ[11] = 20.0;
+		accmY[11] = 10.0;
+		accmX[12] = 20.0;
+		accmX[13] = 30.0;
+		accmX[2] = -50.0;
+		accmY[2] = -10.0;
+		accmZ[2] = -10.0;
+		accmX[4] = -15.0;
+		accmY[6] = -70.0;
+		accmX[6] = 20.0;
+		accmX[3] = -50.0;
+		accmY[3] = 10.0;
+		accmZ[3] = 20.0;
+		accmZ[5] = 30.0;
+		accmX[5] = -110.0;
+		accmY[7] = -50.0;
+		accmX[7] = -60.0;
+		accmZ[7] = 20.0;
+	}
+}
+
 //--------------------------------------------------------------------
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -1358,6 +1392,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			swordTX = 0.0;
 			swordTY = 0.0;
 			swordTZ = 0.0;
+			pose = 0;
 
 			for (int i = 0; i < 10; i++) {
 				swordRainY[i] = 0.0;
@@ -1589,6 +1624,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			else
 				weapon = 1;
 		}
+		if (wParam == 'B') {
+			if (pose == 1)
+				pose = 0;
+			else
+				pose = 1;
+		}
 		if (wParam == VK_OEM_MINUS) {
 				glScalef(0.8, 0.8, 0.8);
 		}
@@ -1694,6 +1735,8 @@ void display()
 
 	//------------------------------ Robot ----------------------------------------
 	glPushMatrix();
+	robotPose();
+
 	glRotatef(accmX[14], 1, 0, 0);
 	glRotatef(accmY[14], 0, 1, 0);
 	glRotatef(accmZ[14], 0, 0, 1);
