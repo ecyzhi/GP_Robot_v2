@@ -62,6 +62,14 @@ int animation = 0;
 int swing = 0;
 int draw = 0;
 
+float swordRX = 0.0;
+float swordRY = 0.0;
+float swordRZ = 0.0;
+float swordTX = 0.0;
+float swordTY = 0.0;
+float swordTZ = 0.0;
+float swordRainY[10] = { 0.0 };
+
 // TODO: Combine duplicating shapes Eg: upperlimbs, upperlimbs2, lowerlimbs, lowerlimbs2
 
 //*******************************************************************
@@ -141,17 +149,55 @@ void walk() {
 }
 
 void drawSword() {
-	if(accmY[3] > -90) {
-		accmY[3] -= 0.05;
-	}
-	else {
-		if (accmX[3] >= -90) {
+	if (draw == 0) {
+		if (accmX[3] >= -125) {
 			accmX[3] -= 0.02;
-			accmZ[5] += 0.02;
-			accmZ[7] += 0.01;
+			accmX[5] -= 0.02;
+			accmX[7] -= 0.005;
+		}
+		else {
+			draw = 1;
+		}
+	}
+	else if(draw == 1) {
+		if (accmX[3] <= -60) {
+			accmX[3] += 0.02;
+			accmX[5] += 0.025;
+			accmX[7] += 0.005;
+		}
+		else {
+			draw = 2;
+		}
+	}
+	else if (draw == 2) {
+		if (accmX[3] >= -120) {
+			accmX[3] -= 0.02;
+			accmX[5] += 0.01;
+			accmX[7] += 0.01;
+		}
+		else {
+			draw = 3;
 		}
 	}
 }
+
+void swordRotation() {
+
+	if (draw == 1) {
+		swordRZ -= 0.02;
+		swordRX += 0.12;
+
+		swordTZ += 0.004;
+		if (swordTY < 0.6) {
+			swordTY += 0.01;
+			swordTZ += 0.01;
+		}
+	}else if (draw == 2) {
+		swordTY += 0.001;
+		swordTX += 0.0005;
+	}
+}
+
 
 // DEVELOPING BASIC SHAPES
 void head() {
@@ -1168,6 +1214,100 @@ void lightSource() {
 	gluDeleteQuadric(sphere);
 }
 
+void swordRain() {
+	if (draw == 3) {
+		if (swordRainY[0] > -32.0) {
+			swordRainY[0] -= 0.12;
+		}
+		if (swordRainY[1] > -32.0) {
+			swordRainY[1] -= 0.08;
+		}
+		if (swordRainY[2] > -31.0) {
+			swordRainY[2] -= 0.1;
+		}
+		if (swordRainY[3] > -35.0) {
+			swordRainY[3] -= 0.15;
+		}
+		if (swordRainY[4] > -28.0) {
+			swordRainY[4] -= 0.2;
+		}
+		if (swordRainY[5] > -25.0) {
+			swordRainY[5] -= 0.18;
+		}
+		if (swordRainY[6] > -27.0) {
+			swordRainY[6] -= 0.13;
+		}
+		if (swordRainY[7] > -33.0) {
+			swordRainY[7] -= 0.22;
+		}
+		if (swordRainY[8] > -30.0) {
+			swordRainY[8] -= 0.17;
+		}
+		if (swordRainY[9] > -22.0) {
+			swordRainY[9] -= 0.15;
+		}
+		
+		glPushMatrix();		
+			glTranslatef(0.0, swordRainY[0], 0.0);
+			glTranslatef(8.0, 25.0, 2.0);
+			sword();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.0, swordRainY[1], 0.0);
+			glTranslatef(-7.0, 25.0, 3.0);
+			sword();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.0, swordRainY[2], 0.0);
+			glTranslatef(9.0, 25.0, 5.0);
+			sword();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.0, swordRainY[3], 0.0);
+			glTranslatef(-2.0, 25.0, 7.0);
+			sword();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.0, swordRainY[4], 0.0);
+			glTranslatef(-10.0, 25.0, 10.0);
+			sword();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.0, swordRainY[5], 0.0);
+			glTranslatef(-4.0, 25.0, -5.0);
+			sword();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.0, swordRainY[6], 0.0);
+			glTranslatef(3.0, 25.0, -3.0);
+			sword();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.0, swordRainY[7], 0.0);
+			glTranslatef(1.0, 25.0, 8.0);
+			sword();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.0, swordRainY[8], 0.0);
+			glTranslatef(5.0, 25.0, 4.0);
+			sword();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(0.0, swordRainY[9], 0.0);
+			glTranslatef(5.0, 25.0, 12.0);
+			sword();
+		glPopMatrix();
+	}
+}
 
 //--------------------------------------------------------------------
 LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -1211,6 +1351,17 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			ty = 0.0;
 			tz = 0.0;
 			animation = 0;
+			draw = 0;
+			swordRX = 0.0;
+			swordRY = 0.0;
+			swordRZ = 0.0;
+			swordTX = 0.0;
+			swordTY = 0.0;
+			swordTZ = 0.0;
+
+			for (int i = 0; i < 10; i++) {
+				swordRainY[i] = 0.0;
+			}
 
 			for (int i = 0; i < 15; i++) {
 				accmX[i] = 0.0;
@@ -1220,7 +1371,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			
 			glLoadIdentity();
 			if (OrthoPers == 1) {
-				glTranslatef(0.0, 0.0, -8.0);
+				glTranslatef(0.0, 0.0, -15.0);
 			}
 		}
 		if (wParam == 0x30) {
@@ -1407,6 +1558,7 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		}
 		if (wParam == 'N') { 
 			animation = 2;
+			weapon = 1;
 			for (int i = 0; i < 15; i++) {
 				accmX[i] = 0.0;
 				accmY[i] = 0.0;
@@ -1423,12 +1575,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			else {
 				glMatrixMode(GL_PROJECTION);
 				glLoadIdentity();
-				glFrustum(-2.0, 2.0, -2.0, 2.0, 1.0, 10.0);
+				glFrustum(-2.0, 2.0, -2.0, 2.0, 1.0, 20.0);
 				OrthoPers = 1;
 
 				glMatrixMode(GL_MODELVIEW);
 				glLoadIdentity();
-				glTranslatef(0.0, 0.0, -8.0);
+				glTranslatef(0.0, 0.0, -15.0);
 			}
 		}
 		if (wParam == 'C') {
@@ -1580,6 +1732,10 @@ void display()
 	
 	//------------------------------ Sword --------------------------------------
 	if (weapon == 1) {
+		glPushMatrix();
+
+		
+
 		// Yellow color for sword
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, yellow);
 		glMaterialfv(GL_BACK, GL_AMBIENT, yellow);
@@ -1589,9 +1745,16 @@ void display()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glColor3f(1.0, 1.0, 1.0);
 		glPushMatrix();
-		glTranslatef(-2.0, 5.0, -1.5);
-		glRotatef(30.0, 0.0, 0.0, 1.0);
-		sword();
+			glTranslatef(-2.0, 5.0, -1.5);
+			glRotatef(30.0, 0.0, 0.0, 1.0);
+
+			glTranslatef(swordTX, swordTY, swordTZ);
+			glRotatef(swordRZ, 0, 0, 1);
+			glRotatef(swordRX, 1, 0, 0);
+			glRotatef(swordRY, 0, 1, 0);
+			swordRotation();
+
+			sword();
 		glPopMatrix();
 
 		glEnable(GL_POLYGON_OFFSET_FILL);
@@ -1602,11 +1765,22 @@ void display()
 
 		glPushAttrib(GL_CURRENT_BIT);
 		glPushMatrix();
-		glTranslatef(-2.0, 5.0, -1.5);
-		glRotatef(30.0, 0.0, 0.0, 1.0);
-		sword();
+			glTranslatef(-2.0, 5.0, -1.5);
+			glRotatef(30.0, 0.0, 0.0, 1.0);
+
+			glTranslatef(swordTX, swordTY, swordTZ);
+			glRotatef(swordRZ, 0, 0, 1);
+			glRotatef(swordRX, 1, 0, 0);
+			glRotatef(swordRY, 0, 1, 0);
+			//swordRotation();
+
+			sword();
 		glPopMatrix();
 		glPopAttrib();
+
+		glPopMatrix();
+
+		swordRain();
 	}
 
 	glPopMatrix();
