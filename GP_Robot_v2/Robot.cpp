@@ -11,6 +11,9 @@
 // Switching view
 float OrthoPers = 0;
 
+// Model translation
+float tx, ty, tz = 0.0;
+
 // For Lighting
 GLfloat fNormalX, fNormalY, fNormalZ = 0.0;
 
@@ -1183,6 +1186,12 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		if (wParam == 'D') { rx = 0.0; ry = 1.0; rz = 0.0;	glRotatef(rotateSpeed, 0.0, 1.0, 0.0); }
 		if (wParam == 'Q') { rx = 0.0; ry = 0.0; rz = 1.0;	glRotatef(rotateSpeed, 0.0, 0.0, 1.0); }
 		if (wParam == 'E') { rx = 0.0; ry = 0.0; rz = -1.0; glRotatef(rotateSpeed, 0.0, 0.0, -1.0); }
+		if (wParam == VK_UP)	{ ty += 1.0; }
+		if (wParam == VK_DOWN)	{ ty -= 1.0; }
+		if (wParam == VK_LEFT)	{ tx -= 1.0; }
+		if (wParam == VK_RIGHT) { tx += 1.0; }
+		if (wParam == VK_SHIFT) { tz -= 1.0; }
+		if (wParam == VK_CONTROL) { tz += 1.0; }
 		if (wParam == VK_SPACE) {
 			rx = 0.0;
 			ry = 0.0;
@@ -1198,6 +1207,9 @@ LRESULT WINAPI WindowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			mx = 0.0;
 			my = 0.0;
 			mz = 0.0;
+			tx = 0.0;
+			ty = 0.0;
+			tz = 0.0;
 			animation = 0;
 
 			for (int i = 0; i < 15; i++) {
@@ -1523,6 +1535,10 @@ void display()
 	//	glRotatef(0.05, rx, ry, rz);
 
 
+	// ************************** Translation ******************************
+	glPushMatrix();
+	glTranslatef(tx, ty, tz);
+
 
 	//------------------------------ Robot ----------------------------------------
 	glPushMatrix();
@@ -1592,6 +1608,9 @@ void display()
 		glPopMatrix();
 		glPopAttrib();
 	}
+
+	glPopMatrix();
+	// ************************** Translation ******************************
 
 
 
